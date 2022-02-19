@@ -1,3 +1,3 @@
-/Users/joserivera/CLionProjects/FileAndPageStructures/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/joserivera/CLionProjects/FileAndPageStructures/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/joserivera/CLionProjects/FileAndPageStructures/cmake-build-debug/CMakeFiles/FileAndPageStructures.dir
+/Users/joserivera/CLionProjects/DatabaseEngineering/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/joserivera/CLionProjects/DatabaseEngineering/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/joserivera/CLionProjects/DatabaseEngineering/cmake-build-debug/CMakeFiles/FileAndPageStructures.dir
