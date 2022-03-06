@@ -1,14 +1,30 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+
+
+
+
+// Returns the value as a string from the data that is a instance variable on my class.
+
+ std::string getString( char data[], int length) {
+
+    char temp[length];
+    memset(temp, 0, length);
+    memcpy( (void *) &temp, data, length);
+
+    std::string result = std::string(temp);
+
+    return result;
+}
+
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
     /*
      * Este es el page (Area donde voy a guardar los bytes, eventualmente estos bytes los voy a escribir al disco
      * y voy a leer del disco.
      * acordar que en C++ los devs usamos el char[] para guardar bytes tambien. So por eso podemos inventar un poco con eso.
      */
-
 
     int MAX_LENGTH = 10;
     char buf[MAX_LENGTH];
@@ -18,34 +34,36 @@ int main() {
     int student_id = 123;
     std::string name = "Joe";
 
+
+
+    std::cout << "Ahora imprimo el contenido random del byte array" << std::endl;
     for(int i =0;i<MAX_LENGTH;++i){
         std::cout << buf[i] << std::endl;
     }
 
-    // Explicitamente seteo el valor que hay en memoria
+
+    std::cout << "Explicitamente seteo el valor que hay en memoria usando memset " << std::endl;
     memset(buf, 0, MAX_LENGTH);
 
-    std::cout << "Guepa" << std::endl;
-
+    std::cout << "ahora mis valores cambiaron: " << std::endl;
     for(int i =0;i<MAX_LENGTH;++i){
         std::cout << buf[i] << std::endl;
     }
 
-    // Aqui escribo la data al 'page', esto sucede cada vez que inserte un record.
+    std::cout << "Aqui escribo la data al 'page' usando memcpy, esto sucede cada vez que inserte un record." << std::endl;
     memcpy(buf, (void *) &student_id, sizeof(int));
     offset = sizeof(int); // ya que anadi algo al page, debo modificar ese offset.
 
-    std::cout << "Ya copie la data al char array, obviamente no se entiende porque estos son bytes." << std::endl;
-
+    std::cout << "Ahora imprimo la data que pase al byte[]: " << std::endl;
     for(int i =0;i<MAX_LENGTH;++i){
         std::cout << buf[i] << std::endl;
     }
 
-    // Aqui solo estoy escribiendo la data del 'page' a una variable de int. Lo hago para poder verla en forma de num
+    std::cout << "Ahora leo los bytes que hay en el byte array y lo envio a la direccion de mi variable int." << std::endl;
     int id2 = 0;
     memcpy((void *) &id2, buf,sizeof(int));
-
     std::cout << "id2:  " << id2 << std::endl;
+    std::cout << "\n " << std::endl;
 
 
     /*
@@ -68,19 +86,20 @@ int main() {
      */
 
     // ahora para anadir el string "Joe", uso el offset para decidir donde empiezo a escribir
+    std::cout << "Ahora, para guardar un string en mi byte[] creo un *ptr que apunta a el str.c_str() y uso eso como source en mi memcpy." << std::endl;
     const char *ptr = name.c_str();
     int strlen = name.length();
+    std::cout << "Luego llamo memcpy usando el ptr al string original como src y el buff como destination." << std::endl;
     memcpy(buf + offset,ptr, strlen);
 
+
+    std::cout << "Luego cuando quiera leer como un string los bytes del string que guarde, \n " << std::endl;
+    std::cout << "creo un char[] temp, lo seteo a 0 usando memset y lo populo usando memcpy()" << std::endl;
     char temp[5];
     memset(temp, 0, 5);
-    // El profesor envia el array de chars sin convertirlo en un pointer a void,
-    // Lo mas seguro es porque un char[] puede ser lo que uno quiera, sea un array de bytes o de chars como tal.
     memcpy((void *) &temp, buf + offset, strlen);
-
-
     std::string name2 = std::string(temp);
-    std::cout << name2 << std::endl;
+    std::cout << "Name sacado de los bytes guardados en el char[].   : " << name2 << std::endl;
 
     /*
      * En lugar de usar memcpy puedo hacer un loop y ver como cada numero y verlo como un pointer a integer, asi veo
@@ -95,18 +114,6 @@ int main() {
      * Por eso usaremos memcpy.
      *
      */
-    char numbers[16];
-
-    for (int i =0; i<4; ++i){
-        *((int *) numbers + i ) = 10 + i;
-    }
-
-    // Display data
-    for (int i =0;i<4;++i) {
-        std::cout << *((int *) numbers + i) << std::endl;
-    }
-
-    // Un heap file es un linked list de pages, en otras palabras voy a tener un linked list de buffers.
 
     return 0;
 }
